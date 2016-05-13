@@ -68,6 +68,7 @@ import java.util.List;
  */
 public class CycleViewPager extends ViewGroup {
     private static final String TAG = "CycleViewPager";
+    private static final boolean CYCLE_DEBUG = false;
     private static final boolean DEBUG = false;
 
     private static final boolean USE_CACHE = false;
@@ -110,16 +111,6 @@ public class CycleViewPager extends ViewGroup {
         public boolean mHasReuseItem = false;
         public boolean mHasInstanceNew = false;
     }
-
-    class FakeItemInfo {
-        int mPosition;
-        int mIndex;
-        FakeItemInfo(int position, int index) {
-            mPosition = position;
-            mIndex = index;
-        }
-    }
-
 
     private static final Comparator<ItemInfo> COMPARATOR = new Comparator<ItemInfo>(){
         @Override
@@ -1121,7 +1112,9 @@ public class CycleViewPager extends ViewGroup {
                 }
                 if (pos == ii.position && !ii.scrolling) {
                     mUnusedItemInfoList.add(mItems.remove(itemIndex));
-                    Log.d("piapiapia", "add to reuse position:" + pos + ", total count:" + mUnusedItemInfoList.size());
+                    if (CYCLE_DEBUG) {
+                        Log.d(TAG, "add to reuse position:" + pos + ", total count:" + mUnusedItemInfoList.size());
+                    }
                     //mAdapter.destroyItem(this, pos, ii.object);
                     if (DEBUG) {
                         Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
@@ -1156,8 +1149,9 @@ public class CycleViewPager extends ViewGroup {
                     }
                     if (pos == ii.position && !ii.scrolling) {
                         mUnusedItemInfoList.add(mItems.remove(itemIndex));
-                        Log.d("piapiapia", "add to reuse position:" + pos + ", total count:" + mUnusedItemInfoList
-                                .size());
+                        if (CYCLE_DEBUG) {
+                            Log.d(TAG, "add to reuse position:" + pos + ", total count:" + mUnusedItemInfoList.size());
+                        }
                         //mAdapter.destroyItem(this, pos, ii.object);
                         if (DEBUG) {
                             Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
@@ -3210,7 +3204,9 @@ public class CycleViewPager extends ViewGroup {
             }
         }
         if (index >= 0) {
-            Log.d("piapiapia", "reused position:" + realPosition + ", total count:" + mUnusedItemInfoList.size());
+            if (CYCLE_DEBUG) {
+                Log.d(TAG, "reused position:" + realPosition + ", total count:" + mUnusedItemInfoList.size());
+            }
             return mUnusedItemInfoList.remove(index);
         } else {
             return null;

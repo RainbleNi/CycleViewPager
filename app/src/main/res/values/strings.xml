@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CycleViewPager</string>
+    <string name="start_auto">Start auto move</string>
+    <string name="stop_auto">Stop auto move</string>
 </resources>
