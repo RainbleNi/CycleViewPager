@@ -49,3 +49,4 @@ setRecycleMode(boolean destroyItemWhenNeeded)
 setNextItem()
 setPrivItem()
 ```
+![ScreenRecord_2016-05-13-13-49-26.gif](http://upload-images.jianshu.io/upload_images/2067811-9ea3f75d1240da4b.gif?imageMogr2/auto-orient/strip)
