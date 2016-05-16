@@ -33,19 +33,22 @@ CycleViewPaer实现了可循环的ViewPager, 可以让ViewPager在第一页左�
   }
 ```
 set recycle mode
+
 设置回收模式
 ```java
 /*
  * destroyItemWhenNeeded 
- * true 启用原生的回收策略
- * false item不进行回收，因为CycleViewPager已经在item的重用上做了最优处理，
- * 所以在item数量较少或者变动频繁的场景中，例如轮播图的应用场景中，为了减少开销，建议为false
- ＊ 默认值为false
+ * true: enable the original recycle stroage. 启用原生的回收策略
+ * false: cache the item when originally should destroy .
+ *        item不进行回收，因为CycleViewPager已经在item的重用上做了最优处理，
+ *        所以在item数量较少或者变动频繁的场景中，例如轮播图的应用场景中，为了减少开销，建议为false
+ ＊ default 默认值为false
  */
 setRecycleMode(boolean destroyItemWhenNeeded)
 ```
 
 set jump to next/priv item
+
 设置跳到下一个、上一个
 ```java
 //因为原生的setCurrentItem方法在循环跳转的临界点会存在歧义，添加此方法
