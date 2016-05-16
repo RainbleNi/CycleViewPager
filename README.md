@@ -3,8 +3,9 @@ A ViewPager who can scroll from last sliding right to first, or first sliding le
 
 [![](https://jitpack.io/v/RainbleNi/CycleViewPager.svg)](https://jitpack.io/#RainbleNi/CycleViewPager)
 
-##介绍
-CycleViewPaer实现可循环的ViewPager,可以让ViewPager在第一页左滑至最后一页，最后一页右滑至第一页。
+##Introduce
+CycleViewPaer to active the Cycle ViewPager, which can scroll from last sliding right to first, or first sliding left to last. 
+CycleViewPaer实现了可循环的ViewPager, 可以让ViewPager在第一页左滑至最后一页，最后一页右滑至第一页。
 
 优点：
 
@@ -13,7 +14,7 @@ CycleViewPaer实现可循环的ViewPager,可以让ViewPager在第一页左滑至
 2 开销少，默认模式下每个position永远只会实例化一次。即使在回收模式下，也是尽可能的多重用之前实例化过的界面。
 
 
-##使用方法
+##Usage
 
 首先，在项目根目录下的build.gradle中添加如下代码：
 
@@ -28,9 +29,10 @@ CycleViewPaer实现可循环的ViewPager,可以让ViewPager在第一页左滑至
 其次，在module的build.gradle中添加最新版本库的依赖:
 ```java
  dependencies {
-           compile 'com.github.RainbleNi:CycleViewPager:0.0.1'
+           compile 'com.github.RainbleNi:CycleViewPager:0.0.2'
   }
 ```
+set recycle mode
 设置回收模式
 ```java
 /*
@@ -43,6 +45,7 @@ CycleViewPaer实现可循环的ViewPager,可以让ViewPager在第一页左滑至
 setRecycleMode(boolean destroyItemWhenNeeded)
 ```
 
+set jump to next/priv item
 设置跳到下一个、上一个
 ```java
 //因为原生的setCurrentItem方法在循环跳转的临界点会存在歧义，添加此方法
