@@ -1,4 +1,6 @@
 # CycleViewPager
+中文文档：http://www.jianshu.com/p/9bf38f6e0541
+
 A ViewPager who can scroll from last sliding right to first, or first sliding left to last. 
 
 [![](https://jitpack.io/v/RainbleNi/CycleViewPager.svg)](https://jitpack.io/#RainbleNi/CycleViewPager)
