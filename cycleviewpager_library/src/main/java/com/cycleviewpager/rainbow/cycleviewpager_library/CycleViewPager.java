@@ -109,7 +109,7 @@ public class CycleViewPager extends ViewGroup {
      */
     class NeedReLayoutValue {
         public boolean mHasReuseItem = false;
-        public boolean mHasInstanceNew = false;
+        public boolean mHasChangeChild = false;
     }
 
     private static final Comparator<ItemInfo> COMPARATOR = new Comparator<ItemInfo>(){
@@ -918,6 +918,12 @@ public class CycleViewPager extends ViewGroup {
     ItemInfo addNewItem(int position, int index, NeedReLayoutValue value, List<ItemInfo> infoList) {
         ItemInfo ii = getReusedItemInfo(position);
         if (ii != null) {
+            if (!mDestroyItemWhenNeeded) {
+                View view = (View) ii.object;
+                if (view.getParent() == null) {
+                    addView(view);
+                }
+            }
             value.mHasReuseItem = true;
         } else {
             ii = new ItemInfo();
@@ -943,9 +949,15 @@ public class CycleViewPager extends ViewGroup {
         ItemInfo ii = getReusedItemInfo(info.position);
         if (ii == null) {
             info.object = mAdapter.instantiateItem(this, info.position);
-            value.mHasInstanceNew = true;
+            value.mHasChangeChild = true;
         } else {
             info.object = ii.object;
+            if (!mDestroyItemWhenNeeded) {
+                View view = (View) info.object;
+                if (view.getParent() == null) {
+                    addView(view);
+                }
+            }
             value.mHasReuseItem = true;
         }
     }
@@ -1176,12 +1188,22 @@ public class CycleViewPager extends ViewGroup {
             instanceItem(info, needRelayout);
         }
 
-
-        if (mDestroyItemWhenNeeded) {
-            for (ItemInfo info : mUnusedItemInfoList) {
-                mAdapter.destroyItem(this, info.position, info.object);
+        if (mUnusedItemInfoList.size() > 0) {
+            needRelayout.mHasChangeChild = true;
+            if (mDestroyItemWhenNeeded) {
+                for (ItemInfo info : mUnusedItemInfoList) {
+                    mAdapter.destroyItem(this, info.position, info.object);
+                }
+                mUnusedItemInfoList.clear();
+            } else {
+                for (ItemInfo info : mUnusedItemInfoList) {
+                    if (info.object instanceof View) {
+                        removeView((View) info.object);
+                    } else {
+                        throw new IllegalArgumentException("please ensure instanceItem return View or setRecycleMode(true)");
+                    }
+                }
             }
-            mUnusedItemInfoList.clear();
         }
 
         calculatePageOffsets(curItem, curIndex, oldCurInfo);
@@ -1230,7 +1252,7 @@ public class CycleViewPager extends ViewGroup {
                 }
             }
         }
-        if (!needRelayout.mHasInstanceNew && needRelayout.mHasReuseItem) {
+        if (!needRelayout.mHasChangeChild && needRelayout.mHasReuseItem) {
             onLayout(false, getLeft(), getTop(), getRight(), getBottom());
         }
     }
