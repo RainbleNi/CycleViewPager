@@ -1189,8 +1189,8 @@ public class CycleViewPager extends ViewGroup {
         }
 
         if (mUnusedItemInfoList.size() > 0) {
-            needRelayout.mHasChangeChild = true;
             if (mDestroyItemWhenNeeded) {
+                needRelayout.mHasChangeChild = true;
                 for (ItemInfo info : mUnusedItemInfoList) {
                     mAdapter.destroyItem(this, info.position, info.object);
                 }
@@ -1198,7 +1198,14 @@ public class CycleViewPager extends ViewGroup {
             } else {
                 for (ItemInfo info : mUnusedItemInfoList) {
                     if (info.object instanceof View) {
-                        removeView((View) info.object);
+                        if (!needRelayout.mHasChangeChild) {
+                            if (indexOfChild((View) info.object) >= 0) {
+                                needRelayout.mHasChangeChild = true;
+                                removeView((View) info.object);
+                            }
+                        } else {
+                            removeView((View) info.object);
+                        }
                     } else {
                         throw new IllegalArgumentException("please ensure instanceItem return View or setRecycleMode(true)");
                     }
